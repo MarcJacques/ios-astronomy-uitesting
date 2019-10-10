@@ -9,7 +9,7 @@
 import XCTest
 
 class AstronomyUITests: XCTestCase {
-    
+
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -32,6 +32,28 @@ class AstronomyUITests: XCTestCase {
 
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+    
+    func testSavingAPhoto() {
+        let app = XCUIApplication()
+        app.launchArguments = ["UITesting"]
+        app.launch()
+        
+        var saveButton: XCUIElement {
+            let button = app.buttons["PhotoDetailViewController.SaveButton"]
+            XCTAssertTrue(button.exists)
+            XCTAssertTrue(button.isHittable)
+            return button
+        }
+        
+        let collectionView = app.collectionViews.firstMatch
+        collectionView.cells.firstMatch.tap()
+        saveButton.tap()
+        
+        if app.alerts["Photo Saved!"].exists {
+            XCTAssertTrue(app.alerts["Photo Saved!"].exists)
+            app.alerts["Photo Saved!"].buttons["Okay"].tap()
+        }
     }
 
     func testLaunchPerformance() {
